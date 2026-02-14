@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MeliChallenge"
 include(":app")
- 
+include(":features:search")
