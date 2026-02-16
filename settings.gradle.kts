@@ -23,3 +23,4 @@ rootProject.name = "MeliChallenge"
 include(":app")
 include(":features:search")
 include(":features:product-details")
+include(":core:data")
