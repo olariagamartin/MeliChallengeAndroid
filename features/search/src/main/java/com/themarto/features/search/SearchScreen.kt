@@ -30,10 +30,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.themarto.core.data.model.ProductPreview
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SearchScreen(
-    viewModel: SearchVM = SearchVM(),
+    viewModel: SearchVM = koinViewModel(),
     navigateToDetails: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -104,7 +105,7 @@ fun SearchResultItemView(
         modifier = modifier
             .size(width = 200.dp, height = 300.dp)
             .padding(vertical = 6.dp, horizontal = 2.dp)
-            .clickable(onClick = onClick)
+            .clickable(onClick = onClick, indication = null, interactionSource = null)
     ) {
         AsyncImage(
             modifier = Modifier

@@ -43,6 +43,10 @@ dependencies {
     // coil
     implementation(libs.coil.compose)
 
+    // koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
