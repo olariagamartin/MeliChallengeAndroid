@@ -5,16 +5,13 @@ import com.themarto.core.data.model.Product
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-sealed class UiState {
-    data class Ready(
-        val product: Product
-    ) : UiState()
-
-    object Loading : UiState()
-}
+data class UiState (
+    val product: Product? = null,
+    val loading: Boolean = false
+)
 
 class ProductDetailsVM : ViewModel() {
 
-    private val _uiState = MutableStateFlow(UiState.Loading)
+    private val _uiState = MutableStateFlow(UiState(loading = true))
     val uiState: StateFlow<UiState> = _uiState
 }

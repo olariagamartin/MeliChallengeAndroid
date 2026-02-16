@@ -28,16 +28,13 @@ fun ProductDetailsScreen(
     viewModel: ProductDetailsVM = ProductDetailsVM()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    when(uiState) {
-        is UiState.Ready -> {
-            ProductDetailsScreenContent(
-                product = (uiState as UiState.Ready).product
-            )
-        }
-        UiState.Loading -> {
-            LoadingScreen()
-        }
+    val product = uiState.product
+    if (uiState.loading || product == null) {
+        LoadingScreen()
+    } else {
+        ProductDetailsScreenContent(
+            product = product
+        )
     }
 }
 
