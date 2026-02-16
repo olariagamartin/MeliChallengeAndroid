@@ -2,12 +2,17 @@ package com.themarto.features.search
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,36 +32,60 @@ import com.themarto.core.data.model.ProductPreview
 
 @Composable
 fun SearchScreen(
-    viewModel: SearchVM = SearchVM()
+    viewModel: SearchVM,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    when(uiState) {
-        is UiState.SearchResult -> {
-            SearchScreenContent(
-                searchResult = (uiState as UiState.SearchResult).searchResult
-            )
-        }
-        UiState.None -> {
-            // Nothing
-        }
-        UiState.Loading -> {
-            // Loading
-        }
-    }
+        SearchScreenContent(
+            searchResult = uiState.searchResult,
+            query = uiState.searchQueryInput,
+            onQueryChange = viewModel::onQueryChange
+        )
 }
 
 @Composable
-fun SearchScreenContent(modifier: Modifier = Modifier, searchResult: List<ProductPreview>) {
-    LazyVerticalGrid(
-        GridCells.Fixed(2),
-        modifier = modifier.fillMaxSize(),
+fun SearchScreenContent(
+    modifier: Modifier = Modifier, searchResult: List<ProductPreview>,
+    query: String,
+    onQueryChange: (String) -> Unit,
+) {
+    Column(
+        modifier = modifier
     ) {
-        items(items = searchResult) {
-            SearchResultItemView(
-                item = it,
-            )
+        SearchBar(
+            query = query,
+            onQueryChange = onQueryChange,
+        )
+        LazyVerticalGrid(
+            GridCells.Fixed(2),
+            modifier = modifier.fillMaxSize(),
+        ) {
+            items(items = searchResult) {
+                SearchResultItemView(
+                    item = it,
+                )
+            }
         }
     }
+
+}
+
+@Composable
+fun SearchBar(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    OutlinedTextField(
+        value = query,
+        onValueChange = onQueryChange,
+        singleLine = true,
+        modifier = modifier
+            .padding(start = 12.dp, top = 8.dp, bottom = 8.dp)
+            .fillMaxWidth(),
+        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+        placeholder = { Text("Buscar productos") },
+        shape = RoundedCornerShape(24.dp)
+    )
 }
 
 @Composable
@@ -99,6 +128,27 @@ private fun SearchResultItemPrev() {
             id = "1",
             title = "Celular Samsung Samsung Zflip",
             imageUrl = "https://http2.mlstatic.com/D_NQ_NP_631627-MLU77166846506_072024-F.jpg"
+        )
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SearchScreenContentPrev() {
+    SearchScreenContent(
+        query = "",
+        onQueryChange = {},
+        searchResult = listOf(
+            ProductPreview(
+                id = "1",
+                title = "Celular Samsung Samsung Zflip",
+                imageUrl = "https://http2.mlstatic.com/D_NQ_NP_631627-MLU77166846506_072024-F.jpg"
+            ),
+            ProductPreview(
+                id = "2",
+                title = "Macbook Pro M3",
+                imageUrl = "https://http2.mlstatic.com/D_NQ_NP_900000-MLU77166846506_072024-F.jpg"
+            )
         )
     )
 }
