@@ -10,6 +10,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
@@ -23,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,6 +46,7 @@ fun SearchScreen(
         searchResult = uiState.searchResult,
         query = uiState.searchQueryInput,
         onQueryChange = viewModel::onQueryChange,
+        onSearch = viewModel::onSearch,
         navigateToDetails = navigateToDetails
     )
 }
@@ -52,6 +56,7 @@ fun SearchScreenContent(
     modifier: Modifier = Modifier, searchResult: List<ProductPreview>,
     query: String,
     onQueryChange: (String) -> Unit,
+    onSearch: () -> Unit,
     navigateToDetails: (String) -> Unit
 ) {
     Column(
@@ -60,6 +65,7 @@ fun SearchScreenContent(
         SearchBar(
             query = query,
             onQueryChange = onQueryChange,
+            onSearch = onSearch,
         )
         LazyVerticalGrid(
             GridCells.Fixed(2),
@@ -81,6 +87,7 @@ fun SearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onSearch: () -> Unit
 ) {
     OutlinedTextField(
         value = query,
@@ -91,7 +98,9 @@ fun SearchBar(
             .fillMaxWidth(),
         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
         placeholder = { Text("Buscar productos") },
-        shape = RoundedCornerShape(24.dp)
+        shape = RoundedCornerShape(24.dp),
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+        keyboardActions = KeyboardActions(onSearch = { onSearch() })
     )
 }
 
@@ -148,6 +157,7 @@ private fun SearchScreenContentPrev() {
         query = "",
         onQueryChange = {},
         navigateToDetails = {},
+        onSearch = {},
         searchResult = listOf(
             ProductPreview(
                 id = "1",

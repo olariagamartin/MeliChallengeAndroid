@@ -6,7 +6,7 @@ import org.koin.dsl.module
 object SearchModuleProvider {
     fun getModules() = listOf(
         module {
-            viewModel { SearchVM() }
+            viewModel { SearchVM(repository = get()) }
         }
     )
 }
