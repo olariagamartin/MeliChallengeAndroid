@@ -6,7 +6,9 @@ import org.koin.dsl.module
 object ProductDetailsModuleProvider {
     fun getModules() = listOf(
         module {
-            viewModel { ProductDetailsVM() }
+            viewModel { (productId: String) ->
+                ProductDetailsVM(repository = get(), productId)
+            }
         }
     )
 }

@@ -34,4 +34,6 @@ android {
 
 dependencies {
 
+    // koin
+    implementation(libs.koin.android)
 }

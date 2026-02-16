@@ -43,6 +43,7 @@ dependencies {
 
     implementation(project(":features:search"))
     implementation(project(":features:product-details"))
+    implementation(project(":core:data"))
 
     // koin
     implementation(libs.koin.android)

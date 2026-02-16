@@ -1,6 +1,7 @@
 package com.themarto.melichallenge
 
 import android.app.Application
+import com.themarto.core.data.di.DataModuleProvider
 import com.themarto.features.productDetails.ProductDetailsModuleProvider
 import com.themarto.features.search.SearchModuleProvider
 import org.koin.android.ext.koin.androidContext
@@ -15,6 +16,7 @@ class MainApplication : Application() {
             modules(
                 SearchModuleProvider.getModules()
                     .plus(ProductDetailsModuleProvider.getModules())
+                    .plus(DataModuleProvider.getModules())
             )
         }
     }

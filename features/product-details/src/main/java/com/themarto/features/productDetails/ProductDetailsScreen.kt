@@ -23,11 +23,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.themarto.core.data.model.Product
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun ProductDetailsScreen(
-    viewModel: ProductDetailsVM = koinViewModel(),
-    productId: String
+    productId: String,
+    viewModel: ProductDetailsVM = koinViewModel { parametersOf(productId) },
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val product = uiState.product

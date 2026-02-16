@@ -13,16 +13,22 @@ sealed class Result<T> {
 
 }
 
-fun <T> Result<T>.isSuccess(): Boolean{
+fun <T> Result<T>.onSuccess(block: (T) -> Unit): Result<T> {
     contract {
-        returns(true) implies (this@isSuccess is Result.Success)
+        callsInPlace(block, kotlin.contracts.InvocationKind.AT_MOST_ONCE)
     }
-    return this is Result.Success
+    if (this is Result.Success) {
+        block(data)
+    }
+    return this
 }
 
-fun <T> Result<T>.isError(): Boolean {
+fun <T> Result<T>.onError(block: (String) -> Unit): Result<T> {
     contract {
-        returns(true) implies (this@isError is Result.Error)
+        callsInPlace(block, kotlin.contracts.InvocationKind.AT_MOST_ONCE)
     }
-    return this is Result.Error
+    if (this is Result.Error) {
+        block(error)
+    }
+    return this
 }
