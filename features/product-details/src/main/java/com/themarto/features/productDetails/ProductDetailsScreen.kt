@@ -11,11 +11,31 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.themarto.core.data.model.Product
+
+@Composable
+fun ProductDetailsScreen(
+    viewModel: ProductDetailsVM = ProductDetailsVM()
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    when(uiState) {
+        is UiState.Ready -> {
+            ProductDetailsScreenContent(
+                product = (uiState as UiState.Ready).product
+            )
+        }
+        UiState.Loading -> {
+            // Loading
+        }
+    }
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
