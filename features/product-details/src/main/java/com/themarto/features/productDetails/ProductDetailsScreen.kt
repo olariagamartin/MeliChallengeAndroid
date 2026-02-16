@@ -25,7 +25,8 @@ import com.themarto.core.data.model.Product
 
 @Composable
 fun ProductDetailsScreen(
-    viewModel: ProductDetailsVM = ProductDetailsVM()
+    viewModel: ProductDetailsVM = ProductDetailsVM(),
+    productId: String
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val product = uiState.product

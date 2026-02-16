@@ -1,5 +1,6 @@
 package com.themarto.features.search
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,14 +33,16 @@ import com.themarto.core.data.model.ProductPreview
 
 @Composable
 fun SearchScreen(
-    viewModel: SearchVM,
+    viewModel: SearchVM = SearchVM(),
+    navigateToDetails: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     SearchScreenContent(
         searchResult = uiState.searchResult,
         query = uiState.searchQueryInput,
-        onQueryChange = viewModel::onQueryChange
+        onQueryChange = viewModel::onQueryChange,
+        navigateToDetails = navigateToDetails
     )
 }
 
@@ -48,6 +51,7 @@ fun SearchScreenContent(
     modifier: Modifier = Modifier, searchResult: List<ProductPreview>,
     query: String,
     onQueryChange: (String) -> Unit,
+    navigateToDetails: (String) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -63,6 +67,7 @@ fun SearchScreenContent(
             items(items = searchResult) {
                 SearchResultItemView(
                     item = it,
+                    onClick = { navigateToDetails(it.id) }
                 )
             }
         }
@@ -93,11 +98,13 @@ fun SearchBar(
 fun SearchResultItemView(
     modifier: Modifier = Modifier,
     item: ProductPreview,
+    onClick: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
             .size(width = 200.dp, height = 300.dp)
             .padding(vertical = 6.dp, horizontal = 2.dp)
+            .clickable(onClick = onClick)
     ) {
         AsyncImage(
             modifier = Modifier
@@ -139,6 +146,7 @@ private fun SearchScreenContentPrev() {
     SearchScreenContent(
         query = "",
         onQueryChange = {},
+        navigateToDetails = {},
         searchResult = listOf(
             ProductPreview(
                 id = "1",
