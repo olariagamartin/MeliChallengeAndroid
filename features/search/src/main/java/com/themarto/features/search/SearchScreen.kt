@@ -87,7 +87,7 @@ fun SearchBar(
         onValueChange = onQueryChange,
         singleLine = true,
         modifier = modifier
-            .padding(start = 12.dp, top = 8.dp, bottom = 8.dp)
+            .padding(horizontal = 12.dp, vertical = 8.dp)
             .fillMaxWidth(),
         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
         placeholder = { Text("Buscar productos") },
