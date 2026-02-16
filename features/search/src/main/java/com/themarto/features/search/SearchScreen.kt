@@ -35,11 +35,12 @@ fun SearchScreen(
     viewModel: SearchVM,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-        SearchScreenContent(
-            searchResult = uiState.searchResult,
-            query = uiState.searchQueryInput,
-            onQueryChange = viewModel::onQueryChange
-        )
+
+    SearchScreenContent(
+        searchResult = uiState.searchResult,
+        query = uiState.searchQueryInput,
+        onQueryChange = viewModel::onQueryChange
+    )
 }
 
 @Composable
