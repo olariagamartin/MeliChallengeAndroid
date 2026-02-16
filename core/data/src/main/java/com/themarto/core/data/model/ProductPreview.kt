@@ -1,6 +1,6 @@
-package com.themarto.features.search
+package com.themarto.core.data.model
 
-data class SearchResultItem(
+data class ProductPreview(
     val id: String,
     val title: String,
     val imageUrl: String

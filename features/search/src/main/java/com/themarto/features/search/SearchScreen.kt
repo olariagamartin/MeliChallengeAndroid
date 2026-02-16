@@ -21,9 +21,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.themarto.core.data.model.ProductPreview
 
 @Composable
-fun SearchScreenContent(modifier: Modifier = Modifier, searchResult: List<SearchResultItem>) {
+fun SearchScreenContent(modifier: Modifier = Modifier, searchResult: List<ProductPreview>) {
     LazyVerticalGrid(
         GridCells.Fixed(2),
         modifier = modifier.fillMaxSize(),
@@ -39,7 +40,7 @@ fun SearchScreenContent(modifier: Modifier = Modifier, searchResult: List<Search
 @Composable
 fun SearchResultItemView(
     modifier: Modifier = Modifier,
-    item: SearchResultItem,
+    item: ProductPreview,
 ) {
     Column(
         modifier = modifier
@@ -72,7 +73,7 @@ fun SearchResultItemView(
 @Composable
 private fun SearchResultItemPrev() {
     SearchResultItemView(
-        item = SearchResultItem(
+        item = ProductPreview(
             id = "1",
             title = "Celular Samsung Samsung Zflip",
             imageUrl = "https://http2.mlstatic.com/D_NQ_NP_631627-MLU77166846506_072024-F.jpg"

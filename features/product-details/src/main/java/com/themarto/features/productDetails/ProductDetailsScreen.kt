@@ -15,15 +15,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.themarto.core.data.model.Product
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProductDetailsScreenContent(
-    productDetails: ProductDetails,
+    product: Product,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        val pagerState = rememberPagerState(pageCount = { productDetails.imageUrls.size })
+        val pagerState = rememberPagerState(pageCount = { product.imageUrls.size })
 
         HorizontalPager(
             state = pagerState,
@@ -32,7 +33,7 @@ fun ProductDetailsScreenContent(
                 .height(250.dp)
         ) { page ->
             AsyncImage(
-                model = productDetails.imageUrls[page],
+                model = product.imageUrls[page],
                 contentDescription = null,
                 contentScale = ContentScale.Fit,
                 modifier = Modifier.fillMaxWidth()
@@ -41,12 +42,12 @@ fun ProductDetailsScreenContent(
 
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = productDetails.title,
+                text = product.title,
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
-            productDetails.attributes.forEach { attribute ->
+            product.attributes.forEach { attribute ->
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         text = "${attribute.name}: ",
@@ -62,7 +63,7 @@ fun ProductDetailsScreenContent(
             }
 
             Text(
-                text = productDetails.description,
+                text = product.description,
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.padding(top = 16.dp)
             )

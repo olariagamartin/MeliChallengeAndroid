@@ -1,6 +1,6 @@
-package com.themarto.features.productDetails
+package com.themarto.core.data.model
 
-data class ProductDetails(
+data class Product(
     val id: String,
     val title: String,
     val description: String,
