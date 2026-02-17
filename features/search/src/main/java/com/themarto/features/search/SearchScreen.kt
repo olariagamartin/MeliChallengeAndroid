@@ -14,9 +14,11 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -38,7 +40,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun SearchScreen(
     viewModel: SearchVM = koinViewModel(),
-    navigateToDetails: (String) -> Unit
+    navigateToDetails: (String) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -47,7 +49,10 @@ fun SearchScreen(
         query = uiState.searchQueryInput,
         onQueryChange = viewModel::onQueryChange,
         onSearch = viewModel::onSearch,
-        navigateToDetails = navigateToDetails
+        navigateToDetails = navigateToDetails,
+        error = uiState.error,
+        onDismissError = viewModel::onDismissError,
+        onConfirmError = viewModel::onConfirmError
     )
 }
 
@@ -57,7 +62,10 @@ fun SearchScreenContent(
     query: String,
     onQueryChange: (String) -> Unit,
     onSearch: () -> Unit,
-    navigateToDetails: (String) -> Unit
+    navigateToDetails: (String) -> Unit,
+    error: String? = null,
+    onDismissError: () -> Unit = {},
+    onConfirmError: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -80,6 +88,18 @@ fun SearchScreenContent(
         }
     }
 
+    error?.let { errorMessage ->
+        AlertDialog(
+            onDismissRequest = onDismissError,
+            title = { Text("Ocurrió un error") },
+            text = { Text(errorMessage) },
+            confirmButton = {
+                TextButton(onClick = onConfirmError) {
+                    Text("Entendido")
+                }
+            }
+        )
+    }
 }
 
 @Composable
@@ -87,7 +107,7 @@ fun SearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    onSearch: () -> Unit
+    onSearch: () -> Unit,
 ) {
     OutlinedTextField(
         value = query,
@@ -108,7 +128,7 @@ fun SearchBar(
 fun SearchResultItemView(
     modifier: Modifier = Modifier,
     item: ProductPreview,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
     Column(
         modifier = modifier

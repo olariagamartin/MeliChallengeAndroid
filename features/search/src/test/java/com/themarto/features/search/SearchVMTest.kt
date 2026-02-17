@@ -78,4 +78,30 @@ class SearchVMTest {
         assert(viewModel.uiState.value.searchQueryInput == "query123")
     }
 
+    @Test
+    fun `6-WHEN onDismiss error is called THEN error is null`() = runTest {
+        val viewModel = SearchVM(repository = provideProductsRepository(
+            searchProducts =  {
+                Result.Error("error123")
+            }
+        ))
+        viewModel.onSearch()
+        advanceUntilIdle()
+        viewModel.onDismissError()
+        assert(viewModel.uiState.value.error == null)
+    }
+
+    @Test
+    fun `7-WHEN onConfirm error is called THEN error is null `() = runTest {
+        val viewModel = SearchVM(repository = provideProductsRepository(
+            searchProducts =  {
+                Result.Error("error123")
+            }
+        ))
+        viewModel.onSearch()
+        advanceUntilIdle()
+        viewModel.onConfirmError()
+        assert(viewModel.uiState.value.error == null)
+    }
+
 }

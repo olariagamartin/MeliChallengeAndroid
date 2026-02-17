@@ -40,4 +40,12 @@ class SearchVM(
                 }
         }
     }
+
+    fun onDismissError() {
+        _uiState.update { it.copy(error = null) }
+    }
+
+    fun onConfirmError() {
+        _uiState.update { it.copy(error = null) }
+    }
 }
