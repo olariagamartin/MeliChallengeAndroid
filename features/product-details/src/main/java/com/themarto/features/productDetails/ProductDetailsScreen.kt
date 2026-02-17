@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
@@ -98,48 +100,52 @@ fun ProductDetailsScreenContent(
                 )
             }
         }
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(250.dp)
-        ) { page ->
-            AsyncImage(
-                model = product.imageUrls[page],
-                contentDescription = null,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = ColorPainter(Color.Gray),
-            )
-        }
-
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = product.title,
-                style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-
-            product.attributes.forEach { attribute ->
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = "${attribute.name}: ",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.weight(0.3f)
-                    )
-                    Text(
-                        text = attribute.value,
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.weight(0.7f)
-                    )
-                }
+        Column(
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        ) {
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(250.dp)
+            ) { page ->
+                AsyncImage(
+                    model = product.imageUrls[page],
+                    contentDescription = null,
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = ColorPainter(Color.Gray),
+                )
             }
 
-            Text(
-                text = product.description,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(top = 16.dp)
-            )
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = product.title,
+                    style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                product.attributes.forEach { attribute ->
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        Text(
+                            text = "${attribute.name}: ",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.weight(0.3f)
+                        )
+                        Text(
+                            text = attribute.value,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.weight(0.7f)
+                        )
+                    }
+                }
+
+                Text(
+                    text = product.description,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(top = 16.dp)
+                )
+            }
         }
     }
 }
