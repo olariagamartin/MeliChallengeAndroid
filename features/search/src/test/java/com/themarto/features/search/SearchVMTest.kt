@@ -11,6 +11,8 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.mockito.kotlin.spy
+import org.mockito.kotlin.verify
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -102,6 +104,16 @@ class SearchVMTest {
         advanceUntilIdle()
         viewModel.onConfirmError()
         assert(viewModel.uiState.value.error == null)
+    }
+
+    @Test
+    fun `8-WHEN onSearch is called THEN repository search is called with the correct query`() = runTest {
+        val repository = spy(provideProductsRepository())
+        val viewModel = SearchVM(repository = repository)
+        viewModel.onQueryChange("query123")
+        viewModel.onSearch()
+        advanceUntilIdle()
+        verify(repository).searchProducts("query123")
     }
 
 }
