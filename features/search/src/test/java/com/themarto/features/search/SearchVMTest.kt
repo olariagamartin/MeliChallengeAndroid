@@ -1,5 +1,6 @@
 package com.themarto.features.search
 
+import com.themarto.core.data.utils.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -53,6 +54,28 @@ class SearchVMTest {
         advanceUntilIdle()
         assert(viewModel.uiState.value.searchResult.isNotEmpty())
         assert(!viewModel.uiState.value.loading)
+    }
+
+    @Test
+    fun `4-WHEN repository return error THEN error is updated and loading is false`() = runTest {
+        val viewModel = SearchVM(repository = provideProductsRepository(
+            searchProducts =  {
+                Result.Error("error123")
+            }
+        ))
+        viewModel.onSearch()
+        advanceUntilIdle()
+
+        assert(!viewModel.uiState.value.loading)
+        assert(viewModel.uiState.value.error == "error123")
+
+    }
+
+    @Test
+    fun `5-WHEN onQueryChange is called THEN searchQueryInput is updated`() = runTest {
+        val viewModel = SearchVM(repository = provideProductsRepository())
+        viewModel.onQueryChange("query123")
+        assert(viewModel.uiState.value.searchQueryInput == "query123")
     }
 
 }

@@ -14,7 +14,8 @@ import kotlinx.coroutines.launch
 data class UiState(
     val searchResult: List<ProductPreview> = emptyList(),
     val searchQueryInput: String = "",
-    val loading: Boolean = false
+    val loading: Boolean = false,
+    val error: String? = null
 )
 
 class SearchVM(
@@ -34,8 +35,8 @@ class SearchVM(
             repository.searchProducts(_uiState.value.searchQueryInput)
                 .onSuccess { productList ->
                     _uiState.update { it.copy(searchResult = productList, loading = false) }
-                }.onError {
-                    // todo
+                }.onError { errorMessage ->
+                    _uiState.update { it.copy(error = errorMessage, loading = false) }
                 }
         }
     }
