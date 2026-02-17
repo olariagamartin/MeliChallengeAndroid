@@ -20,11 +20,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.themarto.core.data.model.Product
+import com.themarto.core.data.model.ProductAttribute
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -67,7 +71,7 @@ fun ProductDetailsScreenContent(
     product: Product,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.fillMaxSize()) {
         val pagerState = rememberPagerState(pageCount = { product.imageUrls.size })
 
         HorizontalPager(
@@ -80,7 +84,8 @@ fun ProductDetailsScreenContent(
                 model = product.imageUrls[page],
                 contentDescription = null,
                 contentScale = ContentScale.Fit,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = ColorPainter(Color.Gray),
             )
         }
 
@@ -143,4 +148,26 @@ fun ErrorDialog(
             }
         }
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ProductDetailsContentPrev() {
+    val dummyAttributes = listOf(
+        ProductAttribute("Brand", "Dummy Brand"),
+        ProductAttribute("Color", "Black"),
+        ProductAttribute("Material", "Plastic")
+    )
+
+    val dummyProduct = Product(
+        id = "123",
+        title = "Dummy Product Title",
+        description = "This is a long description for the dummy product, showcasing its features and benefits.",
+        imageUrls = listOf(
+            "https://http2.mlstatic.com/D_NQ_NP_2X_910385-MLA72793108644_112023-F.webp",
+            "https://http2.mlstatic.com/D_NQ_NP_2X_656208-MLU74581454178_022024-F.webp"
+        ),
+        attributes = dummyAttributes
+    )
+    ProductDetailsScreenContent(product = dummyProduct)
 }
