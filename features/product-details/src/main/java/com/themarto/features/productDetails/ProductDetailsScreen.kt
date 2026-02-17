@@ -85,21 +85,10 @@ fun ProductDetailsScreenContent(
     Column(modifier = modifier.fillMaxSize()) {
         val pagerState = rememberPagerState(pageCount = { product.imageUrls.size })
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(0xFFeed130))
-        ) {
-            IconButton(
-                onClick = navigateBack,
-                modifier = Modifier.padding(4.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = null
-                )
-            }
-        }
+        ProductDetailsTopBar(
+            navigateBack = navigateBack
+        )
+
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
@@ -146,6 +135,28 @@ fun ProductDetailsScreenContent(
                     modifier = Modifier.padding(top = 16.dp)
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun ProductDetailsTopBar(
+    modifier: Modifier = Modifier,
+    navigateBack: () -> Unit = {},
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(Color(0xFFeed130))
+    ) {
+        IconButton(
+            onClick = navigateBack,
+            modifier = Modifier.padding(4.dp)
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = null
+            )
         }
     }
 }
