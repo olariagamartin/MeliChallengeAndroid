@@ -63,7 +63,8 @@ class MainActivity : ComponentActivity() {
             )
         ) { backStackEntry ->
             ProductDetailsScreen(
-                productId = backStackEntry.arguments?.getString(Destinations.Arguments.PRODUCT_ID) ?: ""
+                productId = backStackEntry.arguments?.getString(Destinations.Arguments.PRODUCT_ID) ?: "",
+                navigateBack = { navController.popBackStack() }
             )
         }
     }

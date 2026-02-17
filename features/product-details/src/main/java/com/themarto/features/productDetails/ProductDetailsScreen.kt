@@ -10,10 +10,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,16 +31,33 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun ProductDetailsScreen(
     productId: String,
+    navigateBack: () -> Unit = {},
     viewModel: ProductDetailsVM = koinViewModel { parametersOf(productId) },
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(uiState.navigateBack) {
+        if(uiState.navigateBack) navigateBack()
+    }
+
     val product = uiState.product
-    if (uiState.loading || product == null) {
-        LoadingScreen()
-    } else {
-        ProductDetailsScreenContent(
-            product = product
-        )
+    val error = uiState.error
+    when {
+        error != null -> {
+            ErrorDialog(
+                message = error,
+                onDismiss = viewModel::onDismissError,
+                onConfirm = viewModel::onConfirmError
+            )
+        }
+        uiState.loading && product == null -> {
+            LoadingScreen()
+        }
+        product != null -> {
+            ProductDetailsScreenContent(
+                product = product
+            )
+        }
     }
 }
 
@@ -45,7 +65,7 @@ fun ProductDetailsScreen(
 @Composable
 fun ProductDetailsScreenContent(
     product: Product,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         val pagerState = rememberPagerState(pageCount = { product.imageUrls.size })
@@ -104,4 +124,23 @@ fun LoadingScreen() {
     ) {
         CircularProgressIndicator()
     }
+}
+
+@Composable
+fun ErrorDialog(
+    modifier: Modifier = Modifier,
+    message: String,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Ocurrió un error") },
+        text = { Text(message) },
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text("Entendido")
+            }
+        }
+    )
 }

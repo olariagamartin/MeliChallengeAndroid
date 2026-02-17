@@ -12,7 +12,9 @@ import kotlinx.coroutines.launch
 
 data class UiState (
     val product: Product? = null,
-    val loading: Boolean = false
+    val loading: Boolean = false,
+    val error: String? = null,
+    val navigateBack: Boolean = false
 )
 
 class ProductDetailsVM(
@@ -32,10 +34,18 @@ class ProductDetailsVM(
         viewModelScope.launch {
             repository.getProduct(productId)
                 .onSuccess {
-                _uiState.value = UiState(product = it, loading = false)
+                    _uiState.value = UiState(product = it, loading = false)
                 }.onError {
-                // todo
+                    _uiState.value = UiState(error = "error message", loading = false)
                 }
         }
+    }
+
+    fun onDismissError() {
+        _uiState.value = UiState(error = null, navigateBack = true)
+    }
+
+    fun onConfirmError() {
+        _uiState.value = UiState(error = null, navigateBack = true)
     }
 }
