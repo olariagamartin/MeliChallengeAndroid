@@ -127,6 +127,14 @@ fun ProductDetailsScreenContent(
                     attributes = product.attributes,
                 )
 
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                        .height(1.dp)
+                        .background(Color.LightGray)
+                )
+
                 Text(
                     text = product.description,
                     style = MaterialTheme.typography.bodyLarge,
