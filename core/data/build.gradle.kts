@@ -36,4 +36,9 @@ dependencies {
 
     // koin
     implementation(libs.koin.android)
+
+    // retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.moshi.converter)
+    implementation(libs.moshi)
 }
