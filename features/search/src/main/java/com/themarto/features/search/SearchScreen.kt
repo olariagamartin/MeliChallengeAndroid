@@ -1,6 +1,8 @@
 package com.themarto.features.search
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +19,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -109,19 +112,31 @@ fun SearchBar(
     modifier: Modifier = Modifier,
     onSearch: () -> Unit,
 ) {
-    OutlinedTextField(
-        value = query,
-        onValueChange = onQueryChange,
-        singleLine = true,
-        modifier = modifier
-            .padding(horizontal = 12.dp, vertical = 8.dp)
-            .fillMaxWidth(),
-        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-        placeholder = { Text("Buscar productos") },
-        shape = RoundedCornerShape(24.dp),
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(onSearch = { onSearch() })
-    )
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFFeed130))
+    ) {
+        OutlinedTextField(
+            value = query,
+            onValueChange = onQueryChange,
+            singleLine = true,
+            modifier = modifier
+                .padding(horizontal = 12.dp, vertical = 8.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(24.dp))
+                .background(color = Color.White),
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+            placeholder = { Text("Buscar productos") },
+            shape = RoundedCornerShape(24.dp),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            keyboardActions = KeyboardActions(onSearch = { onSearch() }),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+            )
+        )
+    }
 }
 
 @Composable
