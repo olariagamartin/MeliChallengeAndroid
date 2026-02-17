@@ -1,4 +1,4 @@
-package com.themarto.core.data.network
+package com.themarto.core.data.network.model
 
 import com.squareup.moshi.Json
 
@@ -13,10 +13,5 @@ data class ProductPreviewDTO(
     @Json(name = "name")
     val title: String,
     @Json(name = "pictures")
-    val images: List<Pictures>,
-)
-
-data class Pictures(
-    @Json(name = "url")
-    val url: String
+    val images: List<PictureDTO>,
 )
