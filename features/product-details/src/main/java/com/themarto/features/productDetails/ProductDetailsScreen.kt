@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -114,20 +115,17 @@ fun ProductDetailsScreenContent(
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
-                product.attributes.forEach { attribute ->
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Text(
-                            text = "${attribute.name}: ",
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.weight(0.3f)
-                        )
-                        Text(
-                            text = attribute.value,
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.weight(0.7f)
-                        )
-                    }
-                }
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                        .height(1.dp)
+                        .background(Color.LightGray)
+                )
+
+                ProductAttributes(
+                    attributes = product.attributes,
+                )
 
                 Text(
                     text = product.description,
