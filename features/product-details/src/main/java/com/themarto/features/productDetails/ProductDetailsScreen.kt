@@ -1,6 +1,7 @@
 package com.themarto.features.productDetails
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,8 +11,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -41,7 +46,7 @@ fun ProductDetailsScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(uiState.navigateBack) {
-        if(uiState.navigateBack) navigateBack()
+        if (uiState.navigateBack) navigateBack()
     }
 
     val product = uiState.product
@@ -54,12 +59,15 @@ fun ProductDetailsScreen(
                 onConfirm = viewModel::onConfirmError
             )
         }
+
         uiState.loading && product == null -> {
             LoadingScreen()
         }
+
         product != null -> {
             ProductDetailsScreenContent(
-                product = product
+                product = product,
+                navigateBack = navigateBack
             )
         }
     }
@@ -70,10 +78,26 @@ fun ProductDetailsScreen(
 fun ProductDetailsScreenContent(
     product: Product,
     modifier: Modifier = Modifier,
+    navigateBack: () -> Unit = {},
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         val pagerState = rememberPagerState(pageCount = { product.imageUrls.size })
 
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFeed130))
+        ) {
+            IconButton(
+                onClick = navigateBack,
+                modifier = Modifier.padding(4.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = null
+                )
+            }
+        }
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
