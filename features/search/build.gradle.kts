@@ -62,4 +62,8 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
     testImplementation(libs.mockito)
+
+    // paging
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.paging.compose)
 }

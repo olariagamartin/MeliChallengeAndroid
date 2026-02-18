@@ -1,25 +1,23 @@
 package com.themarto.features.search
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import com.themarto.core.data.model.ProductPreview
 import com.themarto.core.data.repository.ProductsRepository
-import com.themarto.core.data.utils.onError
-import com.themarto.core.data.utils.onSuccess
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 data class UiState(
-    val searchResult: List<ProductPreview> = emptyList(),
+    val productsResult: Flow<PagingData<ProductPreview>>? = null,
     val searchQueryInput: String = "",
     val loading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
 )
 
 class SearchVM(
-    private val repository: ProductsRepository
+    private val repository: ProductsRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState())
@@ -30,14 +28,11 @@ class SearchVM(
     }
 
     fun onSearch() {
-        _uiState.update { it.copy(loading = true) }
-        viewModelScope.launch {
-            repository.searchProducts(_uiState.value.searchQueryInput)
-                .onSuccess { productList ->
-                    _uiState.update { it.copy(searchResult = productList, loading = false) }
-                }.onError { errorMessage ->
-                    _uiState.update { it.copy(error = errorMessage, loading = false) }
-                }
+        _uiState.update {
+            it.copy(
+                productsResult = repository.searchProducts(_uiState.value.searchQueryInput),
+                loading = false
+            )
         }
     }
 

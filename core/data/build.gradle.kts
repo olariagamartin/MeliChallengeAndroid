@@ -41,4 +41,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.moshi.converter)
     implementation(libs.moshi)
+
+    // paging
+    implementation(libs.androidx.paging.runtime)
 }

@@ -42,8 +42,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.themarto.core.data.model.ProductPreview
+import kotlinx.coroutines.flow.flowOf
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -52,9 +56,10 @@ fun SearchScreen(
     navigateToDetails: (String) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val products = uiState.productsResult?.collectAsLazyPagingItems()
 
     SearchScreenContent(
-        searchResult = uiState.searchResult,
+        products = products,
         query = uiState.searchQueryInput,
         onQueryChange = viewModel::onQueryChange,
         onSearch = viewModel::onSearch,
@@ -68,7 +73,8 @@ fun SearchScreen(
 
 @Composable
 fun SearchScreenContent(
-    modifier: Modifier = Modifier, searchResult: List<ProductPreview>,
+    modifier: Modifier = Modifier,
+    products: LazyPagingItems<ProductPreview>?,
     query: String,
     onQueryChange: (String) -> Unit,
     onSearch: () -> Unit,
@@ -90,7 +96,7 @@ fun SearchScreenContent(
             loading -> {
                 LoadingScreen()
             }
-            searchResult.isEmpty() -> {
+            products == null -> {
                 InitialView()
             }
             else -> {
@@ -98,11 +104,14 @@ fun SearchScreenContent(
                     GridCells.Fixed(2),
                     modifier = modifier.fillMaxSize(),
                 ) {
-                    items(items = searchResult) {
-                        SearchResultItemView(
-                            item = it,
-                            onClick = { navigateToDetails(it.id) }
-                        )
+                    items(products.itemCount) {
+                        products[it]?.let { product ->
+                            SearchResultItemView(
+                                item = product,
+                                onClick = { navigateToDetails(product.id) }
+                            )
+                        }
+
                     }
                 }
             }
@@ -244,13 +253,20 @@ private fun SearchResultItemPrev() {
 @Preview(showBackground = true)
 @Composable
 private fun SearchScreenContentPrev() {
+    val pagingItems = flowOf(PagingData.from(
+        List(10) {
+            ProductPreview(
+                id = it.toString(),
+                title = "Celular Samsung Samsung Zflip",
+                imageUrl = "https://http2.mlstatic.com/D_NQ_NP_631627-MLU77166846506_072024-F.jpg"
+            )
+        })
+    )
     SearchScreenContent(
         query = "",
         onQueryChange = {},
         navigateToDetails = {},
         onSearch = {},
-        searchResult = listOf(
-
-        )
+        products = pagingItems.collectAsLazyPagingItems()
     )
 }

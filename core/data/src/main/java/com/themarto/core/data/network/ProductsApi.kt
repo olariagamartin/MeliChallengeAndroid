@@ -26,7 +26,8 @@ interface ProductsApi {
         @Query("q") query: String,
         @Query("status") status: String = "active",
         @Query("site_id") siteId: String = "MLA",
-        //@Query("limit") limit: Int = 20,
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int,
     ): SearchResponseDTO
 
     @GET(Products.ID)
