@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -58,6 +57,11 @@ fun SearchScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val products = uiState.productsResult?.collectAsLazyPagingItems()
+
+    if (products?.loadState?.refresh is LoadState.Error) {
+        val error = (products.loadState.refresh as LoadState.Error).error.message
+        viewModel.onPagingDataError(error)
+    }
 
     SearchScreenContent(
         products = products,

@@ -7,6 +7,7 @@ import com.themarto.core.data.repository.ProductsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
 data class UiState(
@@ -22,6 +23,8 @@ class SearchVM(
     private val _uiState = MutableStateFlow<UiState>(UiState())
     val uiState: StateFlow<UiState> = _uiState
 
+    private var errorHandled = true
+
     fun onQueryChange(query: String) {
         _uiState.update { it.copy(searchQueryInput = query) }
     }
@@ -29,7 +32,9 @@ class SearchVM(
     fun onSearch() {
         _uiState.update {
             it.copy(
-                productsResult = repository.searchProducts(_uiState.value.searchQueryInput),
+                productsResult = repository.searchProducts(_uiState.value.searchQueryInput).onEach {
+                    errorHandled = false
+                },
             )
         }
     }
@@ -40,5 +45,11 @@ class SearchVM(
 
     fun onConfirmError() {
         _uiState.update { it.copy(error = null) }
+    }
+
+    fun onPagingDataError(error: String?) {
+        if (errorHandled) return
+        _uiState.update { it.copy(error = error) }
+        errorHandled = true
     }
 }
