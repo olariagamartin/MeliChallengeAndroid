@@ -1,5 +1,6 @@
 package com.themarto.features.search
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
@@ -84,18 +86,24 @@ fun SearchScreenContent(
             onQueryChange = onQueryChange,
             onSearch = onSearch,
         )
-        if (loading) {
-            LoadingScreen()
-        } else {
-            LazyVerticalGrid(
-                GridCells.Fixed(2),
-                modifier = modifier.fillMaxSize(),
-            ) {
-                items(items = searchResult) {
-                    SearchResultItemView(
-                        item = it,
-                        onClick = { navigateToDetails(it.id) }
-                    )
+        when {
+            loading -> {
+                LoadingScreen()
+            }
+            searchResult.isEmpty() -> {
+                InitialView()
+            }
+            else -> {
+                LazyVerticalGrid(
+                    GridCells.Fixed(2),
+                    modifier = modifier.fillMaxSize(),
+                ) {
+                    items(items = searchResult) {
+                        SearchResultItemView(
+                            item = it,
+                            onClick = { navigateToDetails(it.id) }
+                        )
+                    }
                 }
             }
         }
@@ -152,6 +160,28 @@ fun SearchBar(
             )
         )
     }
+}
+
+@Composable
+fun InitialView(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column {
+            Image(
+                painter = painterResource(id = R.drawable.search_icon),
+                contentDescription = null,
+                modifier = Modifier.size(200.dp),
+                contentScale = ContentScale.Crop
+            )
+            Text(
+                text = "Busca productos fácilmente"
+            )
+        }
+
+    }
+
 }
 
 @Composable
@@ -220,16 +250,7 @@ private fun SearchScreenContentPrev() {
         navigateToDetails = {},
         onSearch = {},
         searchResult = listOf(
-            ProductPreview(
-                id = "1",
-                title = "Celular Samsung Samsung Zflip",
-                imageUrl = "https://http2.mlstatic.com/D_NQ_NP_631627-MLU77166846506_072024-F.jpg"
-            ),
-            ProductPreview(
-                id = "2",
-                title = "Macbook Pro M3",
-                imageUrl = "https://http2.mlstatic.com/D_NQ_NP_900000-MLU77166846506_072024-F.jpg"
-            )
+
         )
     )
 }
