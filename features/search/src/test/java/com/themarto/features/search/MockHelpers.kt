@@ -1,18 +1,21 @@
 package com.themarto.features.search
 
+import androidx.paging.PagingData
 import com.themarto.core.data.model.Product
 import com.themarto.core.data.model.ProductAttribute
 import com.themarto.core.data.model.ProductPreview
 import com.themarto.core.data.repository.ProductsRepository
 import com.themarto.core.data.utils.Result
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 fun provideProductsRepository(
-    searchProducts: suspend (query: String) -> Result<List<ProductPreview>> = provideSearchProducts(),
+    searchProductsFlow: Flow<PagingData<ProductPreview>> = provideSearchProductsFlow(),
     getProduct: suspend (productId: String) -> Result<Product> = provideGetProduct()
 ): ProductsRepository {
     return object : ProductsRepository {
-        override suspend fun searchProducts(query: String): Result<List<ProductPreview>> {
-            return searchProducts(query)
+        override fun searchProducts(query: String): Flow<PagingData<ProductPreview>> {
+            return searchProductsFlow
         }
 
         override suspend fun getProduct(productId: String): Result<Product> {
@@ -22,9 +25,8 @@ fun provideProductsRepository(
     }
 }
 
-fun provideSearchProducts(): suspend (query: String) -> Result<List<ProductPreview>> {
-    return {
-        Result.Success(
+fun provideSearchProductsFlow(): Flow<PagingData<ProductPreview>> {
+    return flowOf(PagingData.from(
             List(20) {
                 ProductPreview(
                     id = it.toString(),
@@ -33,7 +35,7 @@ fun provideSearchProducts(): suspend (query: String) -> Result<List<ProductPrevi
                 )
             }
         )
-    }
+    )
 }
 
 fun provideGetProduct(): suspend (productId: String) -> Result<Product> {

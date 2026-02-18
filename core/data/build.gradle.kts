@@ -43,5 +43,5 @@ dependencies {
     implementation(libs.moshi)
 
     // paging
-    implementation(libs.androidx.paging.runtime)
+    api(libs.androidx.paging.runtime)
 }

@@ -1,19 +1,22 @@
 package com.themarto.features.productDetails
 
+import androidx.paging.PagingData
 import com.themarto.core.data.model.Product
 import com.themarto.core.data.model.ProductAttribute
 import com.themarto.core.data.model.ProductPreview
 import com.themarto.core.data.repository.ProductsRepository
 import com.themarto.core.data.utils.Result
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 // duplicated: could be in a dedicated module
 fun provideProductsRepository(
-    searchProducts: suspend (query: String) -> Result<List<ProductPreview>> = provideSearchProducts(),
+    searchProductsFlow: Flow<PagingData<ProductPreview>> = provideSearchProductsFlow(),
     getProduct: suspend (productId: String) -> Result<Product> = provideGetProduct()
 ): ProductsRepository {
     return object : ProductsRepository {
-        override suspend fun searchProducts(query: String): Result<List<ProductPreview>> {
-            return searchProducts(query)
+        override fun searchProducts(query: String): Flow<PagingData<ProductPreview>> {
+            return searchProductsFlow
         }
 
         override suspend fun getProduct(productId: String): Result<Product> {
@@ -23,18 +26,17 @@ fun provideProductsRepository(
     }
 }
 
-fun provideSearchProducts(): suspend (query: String) -> Result<List<ProductPreview>> {
-    return {
-        Result.Success(
-            List(20) {
-                ProductPreview(
-                    id = it.toString(),
-                    title = "Celular Samsung Samsung Zflip",
-                    imageUrl = "https://http2.mlstatic.com/D_NQ_NP_631627-MLU77166846506_072024-F.jpg"
-                )
-            }
-        )
-    }
+fun provideSearchProductsFlow(): Flow<PagingData<ProductPreview>> {
+    return flowOf(PagingData.from(
+        List(20) {
+            ProductPreview(
+                id = it.toString(),
+                title = "Celular Samsung Samsung Zflip",
+                imageUrl = "https://http2.mlstatic.com/D_NQ_NP_631627-MLU77166846506_072024-F.jpg"
+            )
+        }
+    )
+    )
 }
 
 fun provideGetProduct(): suspend (productId: String) -> Result<Product> {

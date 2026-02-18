@@ -36,7 +36,7 @@ class ProductDetailsVM(
                 .onSuccess {
                     _uiState.value = UiState(product = it, loading = false)
                 }.onError {
-                    _uiState.value = UiState(error = "error message", loading = false)
+                    _uiState.value = UiState(error = it, loading = false)
                 }
         }
     }

@@ -31,7 +31,6 @@ class SearchVM(
         _uiState.update {
             it.copy(
                 productsResult = repository.searchProducts(_uiState.value.searchQueryInput),
-                loading = false
             )
         }
     }
