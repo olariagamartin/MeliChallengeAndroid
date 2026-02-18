@@ -102,6 +102,17 @@ fun SearchScreenContent(
             products == null -> {
                 InitialView()
             }
+            products.itemCount == 0 -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = "No se encontraron resultados",
+                        fontSize = 24.sp
+                    )
+                }
+            }
             else -> {
                 LazyVerticalGrid(
                     GridCells.Fixed(2),
