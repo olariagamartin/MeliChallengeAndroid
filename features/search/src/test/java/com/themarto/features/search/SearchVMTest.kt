@@ -3,6 +3,12 @@ package com.themarto.features.search
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingData
+import androidx.paging.PagingDataEvent
+import androidx.paging.PagingDataPresenter
+import androidx.paging.compose.LazyPagingItems
+import app.cash.turbine.test
+import com.themarto.core.data.model.Product
+import com.themarto.core.data.model.ProductPreview
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -34,36 +40,57 @@ class SearchVMTest {
     }
 
     @Test
-    fun `0-WHEN ViewModel is initialized THEN loading is false`() = runTest {
-        val viewModel = SearchVM(repository = provideProductsRepository())
-        assert(!viewModel.uiState.value.loading)
-    }
-
-    @Test
     fun `1-WHEN ViewModel is initialized THEN searchResult is null`() = runTest {
         val viewModel = SearchVM(repository = provideProductsRepository())
         assert(viewModel.uiState.value.productsResult == null)
     }
 
-    /*@Test
-    fun `2-WHEN onSearch is called THEN loading is true`() = runTest {
-        val viewModel = SearchVM(repository = provideProductsRepository())
+    @Test
+    fun `2-WHEN onSearch is called THEN products loadState refresh is Loading`() = runTest {
+        val viewModel = SearchVM(repository = provideProductsRepository(
+            searchProductsFlow = flowOf(
+                PagingData.from(
+                    data = emptyList(),
+                    sourceLoadStates = LoadStates(
+                        refresh = LoadState.Loading,
+                        prepend = LoadState.NotLoading(endOfPaginationReached = true),
+                        append = LoadState.NotLoading(endOfPaginationReached = true),
+                    )
+                )
+            )
+        ))
         viewModel.onSearch()
-        assert(viewModel.uiState.value.loading)
-    }*/
+        advanceUntilIdle()
+
+        val pagingDataPresenter = object : PagingDataPresenter<ProductPreview>() {
+            override suspend fun presentPagingDataEvent(event: PagingDataEvent<ProductPreview>) { }
+        }
+
+        viewModel.uiState.test {
+            awaitItem().productsResult?.test {
+                awaitItem().let { pagingDataPresenter.collectFrom(it) }
+                cancelAndConsumeRemainingEvents()
+            }
+
+            pagingDataPresenter.loadStateFlow.test {
+                assert(awaitItem()?.refresh is LoadState.Loading)
+                cancelAndConsumeRemainingEvents()
+            }
+            cancelAndConsumeRemainingEvents()
+        }
+    }
 
     @Test
-    fun `3-WHEN repository return success THEN searchResult is not null and loading is false`() =
+    fun `3-WHEN repository return success THEN searchResult is not null`() =
         runTest {
             val viewModel = SearchVM(repository = provideProductsRepository())
             viewModel.onSearch()
             advanceUntilIdle()
             assert(viewModel.uiState.value.productsResult != null)
-            assert(!viewModel.uiState.value.loading)
         }
 
-    /*@Test
-    fun `4-WHEN repository return error THEN error is updated and loading is false`() = runTest {
+    @Test
+    fun `4-WHEN repository return error THEN loadState refresh is Error`() = runTest {
         val viewModel = SearchVM(
             repository = provideProductsRepository(
                 searchProductsFlow = flowOf(
@@ -81,10 +108,23 @@ class SearchVMTest {
         viewModel.onSearch()
         advanceUntilIdle()
 
-        assert(!viewModel.uiState.value.loading)
-        assert(viewModel.uiState.value.error == "error123")
+        val pagingDataPresenter = object : PagingDataPresenter<ProductPreview>() {
+            override suspend fun presentPagingDataEvent(event: PagingDataEvent<ProductPreview>) { }
+        }
 
-    }*/
+        viewModel.uiState.test {
+            awaitItem().productsResult?.test {
+                awaitItem().let { pagingDataPresenter.collectFrom(it) }
+                cancelAndConsumeRemainingEvents()
+            }
+
+            pagingDataPresenter.loadStateFlow.test {
+                assert(awaitItem()?.refresh is LoadState.Error)
+                cancelAndConsumeRemainingEvents()
+            }
+            cancelAndConsumeRemainingEvents()
+        }
+    }
 
     @Test
     fun `5-WHEN onQueryChange is called THEN searchQueryInput is updated`() = runTest {

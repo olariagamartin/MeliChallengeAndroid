@@ -42,6 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -65,7 +66,6 @@ fun SearchScreen(
         onSearch = viewModel::onSearch,
         navigateToDetails = navigateToDetails,
         error = uiState.error,
-        loading = uiState.loading,
         onDismissError = viewModel::onDismissError,
         onConfirmError = viewModel::onConfirmError
     )
@@ -80,7 +80,6 @@ fun SearchScreenContent(
     onSearch: () -> Unit,
     navigateToDetails: (String) -> Unit,
     error: String? = null,
-    loading: Boolean = false,
     onDismissError: () -> Unit = {},
     onConfirmError: () -> Unit = {},
 ) {
@@ -93,7 +92,7 @@ fun SearchScreenContent(
             onSearch = onSearch,
         )
         when {
-            loading -> {
+            products != null && products.loadState.refresh == LoadState.Loading -> {
                 LoadingScreen()
             }
             products == null -> {
@@ -102,7 +101,7 @@ fun SearchScreenContent(
             else -> {
                 LazyVerticalGrid(
                     GridCells.Fixed(2),
-                    modifier = modifier.fillMaxSize(),
+                    modifier = modifier.weight(1f),
                 ) {
                     items(products.itemCount) {
                         products[it]?.let { product ->
@@ -113,6 +112,14 @@ fun SearchScreenContent(
                         }
 
                     }
+                }
+                if (products.loadState.append == LoadState.Loading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .size(24.dp)
+                            .align(Alignment.CenterHorizontally),
+                    )
                 }
             }
         }

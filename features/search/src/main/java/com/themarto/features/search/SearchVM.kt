@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.update
 data class UiState(
     val productsResult: Flow<PagingData<ProductPreview>>? = null,
     val searchQueryInput: String = "",
-    val loading: Boolean = false,
     val error: String? = null,
 )
 
