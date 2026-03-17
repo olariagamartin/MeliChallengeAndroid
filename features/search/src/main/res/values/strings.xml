@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_no_results">No se encontraron resultados</string>
+    <string name="search_error_title">Ocurrió un error</string>
+    <string name="search_error_confirm">Entendido</string>
+    <string name="search_placeholder">Buscar productos</string>
+    <string name="search_initial_text">Busca productos fácilmente</string>
+</resources>

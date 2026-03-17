@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="product_details_error_title">Ocurrió un error</string>
+    <string name="product_details_error_confirm">Entendido</string>
+    <string name="product_details_attributes_title">Características</string>
+    <string name="product_details_expand">Expand</string>
+    <string name="product_details_collapse">Collapse</string>
+</resources>

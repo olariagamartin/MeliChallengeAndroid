@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
@@ -108,7 +109,7 @@ fun SearchScreenContent(
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = "No se encontraron resultados",
+                        text = stringResource(R.string.search_no_results),
                         fontSize = 24.sp
                     )
                 }
@@ -144,11 +145,11 @@ fun SearchScreenContent(
     error?.let { errorMessage ->
         AlertDialog(
             onDismissRequest = onDismissError,
-            title = { Text("Ocurrió un error") },
+            title = { Text(stringResource(R.string.search_error_title)) },
             text = { Text(errorMessage) },
             confirmButton = {
                 TextButton(onClick = onConfirmError) {
-                    Text("Entendido")
+                    Text(stringResource(R.string.search_error_confirm))
                 }
             }
         )
@@ -178,7 +179,7 @@ fun SearchBar(
                 .clip(RoundedCornerShape(24.dp))
                 .background(color = Color.White),
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-            placeholder = { Text("Buscar productos") },
+            placeholder = { Text(stringResource(R.string.search_placeholder)) },
             shape = RoundedCornerShape(24.dp),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = {
@@ -207,7 +208,7 @@ fun InitialView(modifier: Modifier = Modifier) {
                 contentScale = ContentScale.Crop
             )
             Text(
-                text = "Busca productos fácilmente"
+                text = stringResource(R.string.search_initial_text)
             )
         }
 
