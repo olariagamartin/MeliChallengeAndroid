@@ -121,4 +121,20 @@ class SearchScreenTest {
         }
         composeTestRule.onNodeWithTag(SearchTestTags.NO_ITEMS_FOUND).assertIsDisplayed()
     }
+
+    @Test
+    fun displaysErrorDialog_whenErrorIsNotNull() {
+        composeTestRule.setContent {
+            SearchScreenContent(
+                products = null,
+                query = "iPhone",
+                onQueryChange = {},
+                onSearch = { },
+                navigateToDetails = {},
+                error = "No Connection",
+            )
+        }
+
+        composeTestRule.onNodeWithTag(SearchTestTags.ERROR_DIALOG).assertIsDisplayed()
+    }
 }

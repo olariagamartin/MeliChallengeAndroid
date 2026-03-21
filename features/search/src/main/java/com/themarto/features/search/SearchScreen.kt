@@ -134,6 +134,7 @@ fun SearchScreenContent(
 
     error?.let { errorMessage ->
         AlertDialog(
+            modifier = Modifier.testTag(SearchTestTags.ERROR_DIALOG),
             onDismissRequest = onDismissError,
             title = { Text(stringResource(R.string.search_error_title)) },
             text = { Text(errorMessage) },
@@ -267,6 +268,7 @@ fun LoadingScreen() {
 object SearchTestTags {
     const val LOADING_SCREEN = "loading_screen"
     const val NO_ITEMS_FOUND = "no_items_found"
+    const val ERROR_DIALOG = "error_dialog"
 }
 
 @Preview(showBackground = true)
