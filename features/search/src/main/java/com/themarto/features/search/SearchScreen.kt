@@ -149,7 +149,7 @@ fun SearchScreenContent(
 @Composable
 private fun NoItemsFound() {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().testTag(SearchTestTags.NO_ITEMS_FOUND),
         contentAlignment = Alignment.Center,
     ) {
         Text(
@@ -266,6 +266,7 @@ fun LoadingScreen() {
 
 object SearchTestTags {
     const val LOADING_SCREEN = "loading_screen"
+    const val NO_ITEMS_FOUND = "no_items_found"
 }
 
 @Preview(showBackground = true)

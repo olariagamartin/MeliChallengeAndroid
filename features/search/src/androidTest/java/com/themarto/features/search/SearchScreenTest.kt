@@ -106,4 +106,19 @@ class SearchScreenTest {
 
         assert(navigatedProductId == "123")
     }
+
+    @Test
+    fun noItemsFound_isDisplayed_whenItemCountIsZero() {
+        val fakePagingItems = FakePagingItems<ProductPreview>(emptyList())
+        composeTestRule.setContent {
+            SearchScreenContent(
+                products = fakePagingItems,
+                query = "",
+                onQueryChange = {},
+                onSearch = {},
+                navigateToDetails = {}
+            )
+        }
+        composeTestRule.onNodeWithTag(SearchTestTags.NO_ITEMS_FOUND).assertIsDisplayed()
+    }
 }
