@@ -43,12 +43,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
-import androidx.paging.PagingData
-import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.themarto.core.data.model.ProductPreview
-import kotlinx.coroutines.flow.flowOf
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -57,7 +54,7 @@ fun SearchScreen(
     navigateToDetails: (String) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val products = uiState.productsResult?.collectAsLazyPagingItems()
+    val products = uiState.productsResult?.collectAsLazyPagingItems()?.asPagingItems()
 
     if (products?.loadState?.refresh is LoadState.Error) {
         val error = (products.loadState.refresh as LoadState.Error).error.message
@@ -79,7 +76,7 @@ fun SearchScreen(
 @Composable
 fun SearchScreenContent(
     modifier: Modifier = Modifier,
-    products: LazyPagingItems<ProductPreview>?,
+    products: PagingItems<ProductPreview>?,
     query: String,
     onQueryChange: (String) -> Unit,
     onSearch: () -> Unit,
@@ -276,20 +273,18 @@ private fun SearchResultItemPrev() {
 @Preview(showBackground = true)
 @Composable
 private fun SearchScreenContentPrev() {
-    val pagingItems = flowOf(PagingData.from(
-        List(10) {
-            ProductPreview(
-                id = it.toString(),
-                title = "Celular Samsung Samsung Zflip",
-                imageUrl = "https://http2.mlstatic.com/D_NQ_NP_631627-MLU77166846506_072024-F.jpg"
-            )
-        })
-    )
+    val productsList = List(10) {
+        ProductPreview(
+            id = it.toString(),
+            title = "Celular Samsung Samsung Zflip",
+            imageUrl = "https://http2.mlstatic.com/D_NQ_NP_631627-MLU77166846506_072024-F.jpg"
+        )
+    }
     SearchScreenContent(
         query = "",
         onQueryChange = {},
         navigateToDetails = {},
         onSearch = {},
-        products = pagingItems.collectAsLazyPagingItems()
+        products = FakePagingItems(productsList)
     )
 }
