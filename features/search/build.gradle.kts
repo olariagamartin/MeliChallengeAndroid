@@ -63,6 +63,11 @@ dependencies {
     testImplementation(libs.turbine)
     testImplementation(libs.mockito)
 
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+
     // paging
     implementation(libs.androidx.paging.runtime)
     implementation(libs.paging.compose)
