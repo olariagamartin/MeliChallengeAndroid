@@ -6,9 +6,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.paging.LoadState
+import androidx.paging.LoadStates
 import com.themarto.core.data.model.ProductPreview
 import org.junit.Rule
 import org.junit.Test
@@ -51,6 +54,29 @@ class SearchScreenTest {
         composeTestRule.onNodeWithText("Buscar productos").performTextInput(testQuery)
 
         composeTestRule.onNodeWithText(testQuery).assertIsDisplayed()
+    }
+
+    @Test
+    fun loading_isDisplayed_whenLoadStateIsLoading() {
+        val loadState = createCombinedLoadStates(
+            refresh = LoadState.Loading
+        )
+        val fakePagingItems = FakePagingItems<ProductPreview>(
+            emptyList(),
+            loadState
+        )
+
+        composeTestRule.setContent {
+            SearchScreenContent(
+                products = fakePagingItems,
+                query = "",
+                onQueryChange = {},
+                onSearch = {},
+                navigateToDetails = {}
+            )
+        }
+
+        composeTestRule.onNodeWithTag(SearchTestTags.LOADING_SCREEN).assertIsDisplayed()
     }
 
     @Test
