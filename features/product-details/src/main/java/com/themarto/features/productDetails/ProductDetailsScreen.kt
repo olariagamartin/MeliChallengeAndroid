@@ -162,7 +162,7 @@ fun ProductDetailsTopBar(
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = null
+                contentDescription = stringResource(R.string.product_details_back)
             )
         }
     }

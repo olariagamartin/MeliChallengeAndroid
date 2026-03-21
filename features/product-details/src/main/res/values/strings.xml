@@ -5,4 +5,5 @@
     <string name="product_details_attributes_title">Características</string>
     <string name="product_details_expand">Expand</string>
     <string name="product_details_collapse">Collapse</string>
+    <string name="product_details_back">Back</string>
 </resources>
