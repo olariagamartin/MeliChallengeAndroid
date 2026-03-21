@@ -102,15 +102,7 @@ fun SearchScreenContent(
                 InitialView()
             }
             products.itemCount == 0 -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = stringResource(R.string.search_no_results),
-                        fontSize = 24.sp
-                    )
-                }
+                NoItemsFound()
             }
             else -> {
                 LazyVerticalGrid(
@@ -150,6 +142,19 @@ fun SearchScreenContent(
                     Text(stringResource(R.string.search_error_confirm))
                 }
             }
+        )
+    }
+}
+
+@Composable
+private fun NoItemsFound() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = stringResource(R.string.search_no_results),
+            fontSize = 24.sp
         )
     }
 }
