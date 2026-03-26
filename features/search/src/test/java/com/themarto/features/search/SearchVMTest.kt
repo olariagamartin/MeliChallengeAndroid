@@ -152,7 +152,7 @@ class SearchVMTest {
         viewModel.onSearch()
         advanceUntilIdle()
         viewModel.onDismissError()
-        assert(viewModel.uiState.value.error == null)
+        assert(viewModel.uiState.value.error == SearchError.Null)
     }
 
     @Test
@@ -174,7 +174,7 @@ class SearchVMTest {
         viewModel.onSearch()
         advanceUntilIdle()
         viewModel.onConfirmError()
-        assert(viewModel.uiState.value.error == null)
+        assert(viewModel.uiState.value.error == SearchError.Null)
     }
 
     @Test
