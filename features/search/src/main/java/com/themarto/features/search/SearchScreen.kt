@@ -58,7 +58,7 @@ fun SearchScreen(
     val products = uiState.productsResult?.collectAsLazyPagingItems()?.asPagingItems()
 
     if (products?.loadState?.refresh is LoadState.Error) {
-        val error = (products.loadState.refresh as LoadState.Error).error.message
+        val error = (products.loadState.refresh as LoadState.Error).error
         viewModel.onPagingDataError(error)
     }
 
@@ -82,7 +82,7 @@ fun SearchScreenContent(
     onQueryChange: (String) -> Unit,
     onSearch: () -> Unit,
     navigateToDetails: (String) -> Unit,
-    error: String? = null,
+    error: SearchError = SearchError.Null,
     onDismissError: () -> Unit = {},
     onConfirmError: () -> Unit = {},
 ) {
@@ -132,25 +132,49 @@ fun SearchScreenContent(
 
     }
 
-    error?.let { errorMessage ->
-        AlertDialog(
-            modifier = Modifier.testTag(SearchTestTags.ERROR_DIALOG),
-            onDismissRequest = onDismissError,
-            title = { Text(stringResource(R.string.search_error_title)) },
-            text = { Text(errorMessage) },
-            confirmButton = {
-                TextButton(onClick = onConfirmError) {
-                    Text(stringResource(R.string.search_error_confirm))
-                }
-            }
-        )
+    SearchErrorState(error, onDismissError, onConfirmError)
+}
+
+@Composable
+fun SearchErrorState(
+    error: SearchError,
+    onDismissError: () -> Unit,
+    onConfirmError: () -> Unit
+) {
+    when(error) {
+        SearchError.Network -> ErrorDialog(onDismissError, stringResource(R.string.search_error_network), onConfirmError)
+        SearchError.ServerError -> ErrorDialog(onDismissError, stringResource(R.string.search_error_server), onConfirmError)
+        SearchError.Authentication -> ErrorDialog(onDismissError, stringResource(R.string.search_error_authentication), onConfirmError)
+        SearchError.Unknown -> ErrorDialog(onDismissError, stringResource(R.string.search_error_unknown), onConfirmError)
+        SearchError.Null -> {}
     }
+}
+
+@Composable
+private fun ErrorDialog(
+    onDismissError: () -> Unit,
+    message: String,
+    onConfirmError: () -> Unit,
+) {
+    AlertDialog(
+        modifier = Modifier.testTag(SearchTestTags.ERROR_DIALOG),
+        onDismissRequest = onDismissError,
+        title = { Text(stringResource(R.string.search_error_title)) },
+        text = { Text(text = message) },
+        confirmButton = {
+            TextButton(onClick = onConfirmError) {
+                Text(stringResource(R.string.search_error_confirm))
+            }
+        }
+    )
 }
 
 @Composable
 private fun NoItemsFound() {
     Box(
-        modifier = Modifier.fillMaxSize().testTag(SearchTestTags.NO_ITEMS_FOUND),
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag(SearchTestTags.NO_ITEMS_FOUND),
         contentAlignment = Alignment.Center,
     ) {
         Text(
@@ -257,7 +281,9 @@ fun SearchResultItemView(
 @Composable
 fun LoadingScreen() {
     Column(
-        modifier = Modifier.fillMaxSize().testTag(SearchTestTags.LOADING_SCREEN),
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag(SearchTestTags.LOADING_SCREEN),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

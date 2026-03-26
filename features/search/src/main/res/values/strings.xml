@@ -2,6 +2,10 @@
 <resources>
     <string name="search_no_results">No se encontraron resultados</string>
     <string name="search_error_title">Ocurrió un error</string>
+    <string name="search_error_network">Revisa tu conexión a internet</string>
+    <string name="search_error_server">Ocurrió un error en el servidor</string>
+    <string name="search_error_authentication">No estás autorizado para realizar esta acción</string>
+    <string name="search_error_unknown">Error desconocido</string>
     <string name="search_error_confirm">Entendido</string>
     <string name="search_placeholder">Buscar productos</string>
     <string name="search_initial_text">Busca productos fácilmente</string>

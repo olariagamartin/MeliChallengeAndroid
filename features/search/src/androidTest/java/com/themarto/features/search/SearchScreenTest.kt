@@ -131,7 +131,7 @@ class SearchScreenTest {
                 onQueryChange = {},
                 onSearch = { },
                 navigateToDetails = {},
-                error = "No Connection",
+                error = SearchError.ServerError,
             )
         }
 
