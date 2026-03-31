@@ -5,7 +5,6 @@ import androidx.paging.PagingState
 import com.themarto.core.data.model.ProductPreview
 import com.themarto.core.data.network.ProductsApi
 import com.themarto.core.data.utils.toDomain
-import java.io.IOException
 
 class ProductPagingSource(
     private val productsApi: ProductsApi,
@@ -32,7 +31,7 @@ class ProductPagingSource(
                 prevKey = if (offset == API_STARTING_OFFSET) null else offset - params.loadSize,
                 nextKey = if (products.isEmpty()) null else offset + params.loadSize
             )
-        } catch (exception: IOException) {
+        } catch (exception: Exception) {
             LoadResult.Error(exception)
         }
     }
