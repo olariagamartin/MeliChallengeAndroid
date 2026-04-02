@@ -41,27 +41,12 @@ fun ProductAttributes(
     Column(
         modifier = modifier.padding(2.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(
-                    indication = LocalIndication.current,
-                    interactionSource = remember { MutableInteractionSource() }) {
-                    expanded = !expanded
-                }
-                .padding(vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(R.string.product_details_attributes_title),
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.weight(1f)
-            )
-            Icon(
-                imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
-                contentDescription = if (expanded) stringResource(R.string.product_details_collapse) else stringResource(R.string.product_details_expand)
-            )
-        }
+        ProductAttrsHeader(
+            expanded = expanded,
+            onExpandClick = {
+                expanded = !expanded
+            }
+        )
         AnimatedVisibility(visible = expanded) {
             Column(
                 modifier = Modifier
@@ -99,6 +84,36 @@ fun ProductAttributes(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun ProductAttrsHeader(
+    expanded: Boolean = false,
+    onExpandClick: () -> Unit = {}
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(
+                indication = LocalIndication.current,
+                interactionSource = remember { MutableInteractionSource() },
+                onClick = onExpandClick
+            )
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = stringResource(R.string.product_details_attributes_title),
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1f)
+        )
+        Icon(
+            imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
+            contentDescription = if (expanded) stringResource(R.string.product_details_collapse) else stringResource(
+                R.string.product_details_expand
+            )
+        )
     }
 }
 
