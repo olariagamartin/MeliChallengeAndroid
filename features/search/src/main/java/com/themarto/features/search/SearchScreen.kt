@@ -47,6 +47,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.themarto.core.data.model.ProductPreview
+import com.themarto.core.ui.theme.MLYellow
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -195,7 +196,7 @@ fun SearchBar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFFeed130))
+            .background(MLYellow)
     ) {
         OutlinedTextField(
             value = query,

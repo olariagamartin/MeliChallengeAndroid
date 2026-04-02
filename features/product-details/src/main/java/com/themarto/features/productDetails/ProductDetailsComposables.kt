@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.themarto.core.data.model.ProductAttribute
+import com.themarto.core.ui.theme.BackgroundGray
 
 @Composable
 fun ProductAttributes(
@@ -57,7 +58,7 @@ fun ProductAttributes(
                     val bgColor = if (index % 2 == 0) {
                         Color.White
                     } else {
-                        Color(0xFFF5F5F5)
+                        BackgroundGray
                     }
                     Row(
                         modifier = Modifier

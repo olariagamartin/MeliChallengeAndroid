@@ -39,6 +39,7 @@ android {
 dependencies {
 
     implementation(project(":core:data"))
+    implementation(project(":core:ui"))
 
     // coil
     implementation(libs.coil.compose)
@@ -57,6 +58,10 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     debugImplementation(libs.androidx.ui.tooling)
 
+    // Paging
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.paging.compose)
+
     // test
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
@@ -67,8 +72,4 @@ dependencies {
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-
-    // paging
-    implementation(libs.androidx.paging.runtime)
-    implementation(libs.paging.compose)
 }
