@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.themarto.core.data.model.ProductAttribute
+import com.themarto.core.ui.extensions.ModifierConstants.Weight.HALF
 import com.themarto.core.ui.theme.BackgroundGray
 
 @Composable
@@ -71,14 +72,14 @@ fun ProductAttributes(
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier
-                                .weight(0.5f)
+                                .weight(HALF)
                                 .padding(horizontal = 8.dp)
                         )
                         Text(
                             text = attribute.value,
                             style = MaterialTheme.typography.bodyLarge,
                             modifier = Modifier
-                                .weight(0.5f)
+                                .weight(HALF)
                                 .padding(horizontal = 8.dp, vertical = 8.dp)
                         )
                     }
