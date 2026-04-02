@@ -188,6 +188,7 @@ fun ErrorDialog(
     onConfirm: () -> Unit,
 ) {
     AlertDialog(
+        modifier = modifier,
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.product_details_error_title)) },
         text = { Text(message) },
