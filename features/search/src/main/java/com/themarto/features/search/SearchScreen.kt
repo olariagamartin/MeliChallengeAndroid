@@ -47,6 +47,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.themarto.core.data.model.ProductPreview
+import com.themarto.core.ui.composables.ErrorDialog
 import com.themarto.core.ui.theme.MLYellow
 import org.koin.androidx.compose.koinViewModel
 
@@ -143,31 +144,36 @@ fun SearchErrorState(
     onConfirmError: () -> Unit
 ) {
     when(error) {
-        SearchError.Network -> ErrorDialog(onDismissError, stringResource(R.string.search_error_network), onConfirmError)
-        SearchError.ServerError -> ErrorDialog(onDismissError, stringResource(R.string.search_error_server), onConfirmError)
-        SearchError.Authentication -> ErrorDialog(onDismissError, stringResource(R.string.search_error_authentication), onConfirmError)
-        SearchError.Unknown -> ErrorDialog(onDismissError, stringResource(R.string.search_error_unknown), onConfirmError)
+        SearchError.Network -> ErrorDialog(
+            title = stringResource(R.string.search_error_title),
+            message = stringResource(R.string.search_error_network),
+            onDismiss = onDismissError,
+            onConfirm = onConfirmError,
+            confirmText = stringResource(R.string.search_error_confirm)
+        )
+        SearchError.ServerError -> ErrorDialog(
+            title = stringResource(R.string.search_error_title),
+            message = stringResource(R.string.search_error_server),
+            onDismiss = onDismissError,
+            onConfirm = onConfirmError,
+            confirmText = stringResource(R.string.search_error_confirm)
+        )
+        SearchError.Authentication -> ErrorDialog(
+            title = stringResource(R.string.search_error_title),
+            message = stringResource(R.string.search_error_authentication),
+            onDismiss = onDismissError,
+            onConfirm = onConfirmError,
+            confirmText = stringResource(R.string.search_error_confirm)
+        )
+        SearchError.Unknown -> ErrorDialog(
+            title = stringResource(R.string.search_error_title),
+            message = stringResource(R.string.search_error_unknown),
+            onDismiss = onDismissError,
+            onConfirm = onConfirmError,
+            confirmText = stringResource(R.string.search_error_confirm)
+        )
         SearchError.Null -> {}
     }
-}
-
-@Composable
-private fun ErrorDialog(
-    onDismissError: () -> Unit,
-    message: String,
-    onConfirmError: () -> Unit,
-) {
-    AlertDialog(
-        modifier = Modifier.testTag(SearchTestTags.ERROR_DIALOG),
-        onDismissRequest = onDismissError,
-        title = { Text(stringResource(R.string.search_error_title)) },
-        text = { Text(text = message) },
-        confirmButton = {
-            TextButton(onClick = onConfirmError) {
-                Text(stringResource(R.string.search_error_confirm))
-            }
-        }
-    )
 }
 
 @Composable
@@ -295,7 +301,6 @@ fun LoadingScreen() {
 object SearchTestTags {
     const val LOADING_SCREEN = "loading_screen"
     const val NO_ITEMS_FOUND = "no_items_found"
-    const val ERROR_DIALOG = "error_dialog"
 }
 
 @Preview(showBackground = true)

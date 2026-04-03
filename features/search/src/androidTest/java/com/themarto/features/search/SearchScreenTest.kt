@@ -13,6 +13,7 @@ import androidx.compose.ui.test.performTextInput
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import com.themarto.core.data.model.ProductPreview
+import com.themarto.core.ui.composables.TestTags
 import org.junit.Rule
 import org.junit.Test
 
@@ -135,6 +136,6 @@ class SearchScreenTest {
             )
         }
 
-        composeTestRule.onNodeWithTag(SearchTestTags.ERROR_DIALOG).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(TestTags.ERROR_DIALOG).assertIsDisplayed()
     }
 }

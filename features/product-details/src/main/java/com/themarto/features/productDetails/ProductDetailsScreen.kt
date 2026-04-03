@@ -38,6 +38,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.themarto.core.data.model.Product
 import com.themarto.core.data.model.ProductAttribute
+import com.themarto.core.ui.composables.ErrorDialog
 import com.themarto.core.ui.theme.MLYellow
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -59,9 +60,11 @@ fun ProductDetailsScreen(
     when {
         error != null -> {
             ErrorDialog(
+                title = stringResource(R.string.product_details_error_title),
                 message = error,
                 onDismiss = viewModel::onDismissError,
-                onConfirm = viewModel::onConfirmError
+                onConfirm = viewModel::onConfirmError,
+                confirmText = stringResource(R.string.product_details_error_confirm)
             )
         }
 
@@ -178,26 +181,6 @@ fun LoadingScreen() {
     ) {
         CircularProgressIndicator()
     }
-}
-
-@Composable
-fun ErrorDialog(
-    modifier: Modifier = Modifier,
-    message: String,
-    onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
-) {
-    AlertDialog(
-        modifier = modifier,
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.product_details_error_title)) },
-        text = { Text(message) },
-        confirmButton = {
-            TextButton(onClick = onConfirm) {
-                Text(stringResource(R.string.product_details_error_confirm))
-            }
-        }
-    )
 }
 
 @Preview(showBackground = true)
