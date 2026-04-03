@@ -22,6 +22,7 @@ Followed a modular Clean-Architecture style
       Retrofit API, repository implementations.
 
       *On a bigger project, **:network** and **:domain** modules could be extracted*
+    - **ui** (Android library) Common UI components.
 
 - **features** Screen UIs, ViewModels, Koin modules for each feature.
     - **search**
@@ -38,8 +39,10 @@ Followed a modular Clean-Architecture style
 - **Koin** for dependency injection
 - **Paging 3** to handle large volume of data and provide a smooth UX
 - **Unit Tests** for the ViewModels
+- **UI Testing** with Compose
 - **Kotlin Flows** for reactiveness
 - **MVVM** architecture
+- **Detekt** for code quality
 
 ## 📽️ Screenshots
 
