@@ -7,10 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 
-object TestTags {
-    const val ERROR_DIALOG = "error_dialog"
-}
-
 @Composable
 fun ErrorDialog(
     title: String,
@@ -30,4 +26,8 @@ fun ErrorDialog(
             }
         }
     )
+}
+
+object TestTags {
+    const val ERROR_DIALOG = "error_dialog"
 }
