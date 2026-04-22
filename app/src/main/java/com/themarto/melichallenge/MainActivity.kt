@@ -17,9 +17,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.themarto.core.ui.theme.MLYellow
 import com.themarto.features.productDetails.ProductDetailsScreen
 import com.themarto.features.search.SearchScreen
-import com.themarto.melichallenge.ui.theme.MLYellow
 import com.themarto.melichallenge.ui.theme.MeliChallengeTheme
 
 class MainActivity : ComponentActivity() {
