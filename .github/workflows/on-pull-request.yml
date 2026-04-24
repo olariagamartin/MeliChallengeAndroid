@@ -23,7 +23,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run Unit Tests
-        run: ./gradlew testDebugUnitTest --stacktrace
+        run: ./gradlew testReleaseUnitTest --stacktrace
 
   detekt:
     name: Run Static Analysis (Detekt)
