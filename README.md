@@ -44,6 +44,13 @@ Followed a modular Clean-Architecture style
 - **MVVM** architecture
 - **Detekt** for code quality
 
+## 🔄 CI / CD
+
+Implemented with Github Actions
+
+- Workflow to run tests on every Pull Request
+- Workflow for releases
+
 ## 📽️ Screenshots
 
 |Search init|Search with results|Product details|
